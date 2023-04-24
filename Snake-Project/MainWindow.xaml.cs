@@ -20,9 +20,33 @@ namespace Snake_Project
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly int rows = 19, cols = 19;
+        private readonly Image[,] gridImages;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private Image[,]SetupGrid()
+        {
+            Image[,] images = new Image[rows, cols];   
+            GameGrid.Rows = rows;
+            GameGrid.Columns = cols;
+
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < cols; c++)
+                {
+                    Image image = new Image();
+                    {
+                        Source = Images.Empty
+                    };
+
+                    images[r, c] = image;
+                    GameGrid.Children.Add(image);
+                }
+            }
+            return images;
         }
     }
 }
