@@ -41,7 +41,6 @@ namespace Snake_Project
                     {
                         Source = Images.Empty
                     };
-
                     images[r, c] = image;
                     GameGrid.Children.Add(image);
                 }
