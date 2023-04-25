@@ -25,6 +25,7 @@ namespace Snake_Project
         public MainWindow()
         {
             InitializeComponent();
+            gridImages = SetupGrid();
         }
 
         private Image[,]SetupGrid()
@@ -37,9 +38,9 @@ namespace Snake_Project
             {
                 for (int c = 0; c < cols; c++)
                 {
-                    Image image = new Image();
+                    Image image = new Image()
                     {
-                        Source = Images.Empty
+                       Source = Images.Empty
                     };
                     images[r, c] = image;
                     GameGrid.Children.Add(image);
