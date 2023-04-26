@@ -115,7 +115,7 @@ namespace Snake_Project
                 return false;
             }
             Direction lastDir  = GetLastDirection();
-            return newDir != lastDir; && newDir != lastDir.Opposite();
+            return newDir != lastDir && newDir != lastDir.Opposite();
         }
 
 
