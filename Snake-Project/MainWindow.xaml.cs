@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Media;
 
 namespace Snake_Project
 {
@@ -40,6 +42,8 @@ namespace Snake_Project
         private readonly Image[,] gridImages;
         private GameState gameState;
         private bool gameRunning;
+        SoundPlayer player = new SoundPlayer();
+        public bool audioON = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -56,6 +60,23 @@ namespace Snake_Project
             await ShowGameOver();
             gameState = new GameState(rows,cols);
         }
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (audioON == false)
+            {
+
+                player.SoundLocation = @"C:\Users\807077CTC\Downloads\DC - Thunderstruck (Official Video).wav";
+                player.Play();
+                audioON = true;
+            }
+            else
+            {
+                player.Stop();
+                audioON = false;
+                MusicBtn.IsChecked = false;
+            }
+        }
+
 
         private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {

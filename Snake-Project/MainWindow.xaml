@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Snake_Project"
         mc:Ignorable="d"
         Title="Snake" Height="500" Width="800"
+        
         MinWidth="300" MinHeight="300"
         Background="{StaticResource BackgroundColor}"
         Foreground="{StaticResource TextColor}"
@@ -57,9 +58,11 @@
                            FontSize="26"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           TextWrapping="Wrap"/>
+                           TextWrapping="Wrap"
+                         />
 
             </Border>
+            <CheckBox x:Name="MusicBtn" Content="Music" HorizontalAlignment="Left" Margin="523,185,0,0" VerticalAlignment="Top" Click="RadioButton_Checked" FontFamily="Stencil" Foreground="White" FontSize="25" Grid.Row="1" Height="37" Width="119"/>
 
 
         </Grid>
