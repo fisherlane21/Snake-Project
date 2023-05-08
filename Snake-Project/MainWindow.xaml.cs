@@ -96,7 +96,7 @@ namespace Snake_Project
             }
         }
 
-        // method is an event handler that responds to the PreviewKeyDown event of the window.
+       
         // It checks if the overlay is visible and sets the Handled property to true to indicate that the event has been handled. 
         private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
