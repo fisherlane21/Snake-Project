@@ -22,6 +22,8 @@ namespace Snake_Project
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Dictionary that maps GridValue to ImageSource for displaying the game grid
+
         private readonly Dictionary<GridValue, ImageSource> gridValtoImage = new()
         {
             {GridValue.Empty, Images.Empty },
@@ -30,6 +32,7 @@ namespace Snake_Project
             
         };
 
+        // Dictionary that maps Direction to rotation angle for rotating the snake head
         private readonly Dictionary<Direction, int> dirToRotation = new()
         {
             {Direction.Up, 0 },
@@ -38,34 +41,50 @@ namespace Snake_Project
             {Direction.Left,270}
 
         };
+
+        // Constants for number of rows and columns in the game grid
         private readonly int rows = 17, cols = 17;
+
+        // 2D array to hold the Image controls for the game grid
         private readonly Image[,] gridImages;
+
+        // Instance of the game state
         private GameState gameState;
+
+        // Boolean flag to indicate if the game is running
         private bool gameRunning;
-        SoundPlayer player = new SoundPlayer();
+
+        // Instance of the SoundPlayer for playing audio
+        MediaPlayer player = new MediaPlayer();
+
+        // Boolean flag to indicate if audio is enabled
         public bool audioON = false;
+
+
         public MainWindow()
         {
             InitializeComponent();
-            gridImages = SetupGrid();
-            gameState = new GameState(rows,cols);
+            gridImages = SetupGrid(); // Set up the game grid and store the Image controls in gridImages
+            gameState = new GameState(rows,cols); // Initialize the game state with the number of rows and columns
         }
 
         private async Task RunGame()
         {
-            Draw();
-            await ShowCountdown();
-            Overlay.Visibility = Visibility.Hidden;
-            await GameLoop();
-            await ShowGameOver();
-            gameState = new GameState(rows,cols);
+            Draw(); // Draw the initial state of the game
+            await ShowCountdown(); // Show the countdown before the game starts
+            Overlay.Visibility = Visibility.Hidden; // Hide the overlay once the countdown is over
+            await GameLoop(); // start the game loop
+            await ShowGameOver(); // Show the game over screen once the game is over
+            gameState = new GameState(rows,cols); // Reset the game state for a new game
         }
+
+        // plays thunderstruck if the radio button is checked
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if (audioON == false)
             {
-
-                player.SoundLocation = @"C:\Users\807077CTC\Downloads\DC - Thunderstruck (Official Video).wav";
+                player.Position= new TimeSpan(0,0,0);
+                player.Open(new Uri($"Assets/DC - Thunderstruck (Official Video).wav", UriKind.Relative));
                 player.Play();
                 audioON = true;
             }
@@ -77,7 +96,8 @@ namespace Snake_Project
             }
         }
 
-
+        // method is an event handler that responds to the PreviewKeyDown event of the window.
+        // It checks if the overlay is visible and sets the Handled property to true to indicate that the event has been handled. 
         private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Overlay.Visibility == Visibility.Visible)
@@ -94,7 +114,8 @@ namespace Snake_Project
             }
         }
 
-
+        // method is an event handler that responds to the KeyDown event of the window. It checks if the game is over and returns if it is.
+        // Otherwise, it changes the direction of the snake based on the key that was pressed.
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (gameState.GameOver)
@@ -118,6 +139,9 @@ namespace Snake_Project
             }
         }
 
+
+        // This method runs the game loop until the game is over
+
         private async Task GameLoop()
         {
             while (!gameState.GameOver)
@@ -128,11 +152,15 @@ namespace Snake_Project
             }
         }
 
+
+        // This method sets up the initial image grid for the game board
         private Image[,]SetupGrid()
         {
             Image[,] images = new Image[rows, cols];   
             GameGrid.Rows = rows;
             GameGrid.Columns = cols;
+
+            // Loop through each row and column of the grid and create a new image for each cell
 
             for (int r = 0; r < rows; r++)
             {
@@ -140,15 +168,20 @@ namespace Snake_Project
                 {
                     Image image = new Image()
                     {
-                       Source = Images.Empty,
+                        // Create a new image with the empty image source and set the render transform origin
+                        Source = Images.Empty,
                       RenderTransformOrigin = new Point(0.5, 0.5),
                     };
                     images[r, c] = image;
                     GameGrid.Children.Add(image);
                 }
             }
+            // Return the array of images
             return images;
         }
+
+
+        // This method draws the current game state on the screen
         private void Draw()
         {
             DrawGrid();
@@ -156,11 +189,14 @@ namespace Snake_Project
             ScoreText.Text = $"SCORE {gameState.Score}";
         }
 
-     
+
+        // This method draws the grid on the screen
         private void DrawGrid()
         {
+            // Loop through each row in the grid
             for (int r = 0;r < rows; r++)
             {
+                // Loop through each column in the grid
                 for (int c =0; c < cols; c++)
                 {
                     GridValue gridVal = gameState.Grid[r, c];
@@ -172,19 +208,25 @@ namespace Snake_Project
             }
         }
 
+        // This method draws the snake's head on the screen
+
         private void DrawSnakeHead()
         {
             Position headPos = gameState.HeadPosition();
             Image image = gridImages[headPos.Row, headPos.Col];
             image.Source = Images.Head;
 
+            // Determine the rotation angle based on the snake's current direction
             int rotation = dirToRotation[gameState.Dir];
             image.RenderTransform = new RotateTransform(rotation);
         }
 
+        // This method draws the dead snake on the screen
         private async Task DrawDeadSnake()
         {
             List<Position> positions = new List<Position>(gameState.SnakePositions());
+
+            // Loop through each position in the body and animate the death sequence
             for (int i = 0; i < positions.Count; i++)
             {
                 Position pos = positions[i];
@@ -194,6 +236,8 @@ namespace Snake_Project
             }
         }
 
+
+        // This method shows a countdown on the screen before starting the game
         private async Task ShowCountdown()
         {
             for(int i = 3; i>=1; i--)
@@ -204,10 +248,15 @@ namespace Snake_Project
 
         }
 
+
+        // This method shows the game over screen on the screen
         private async Task ShowGameOver()
         {
+            // draws dead snake
             await DrawDeadSnake();
             await Task.Delay(1000);
+
+            // Make the overlay visible
             Overlay.Visibility = Visibility.Visible;
             OverlayText.Text = "PRESS ANY KEY TO START";
         }

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Body.png" />
+    <None Remove="Assets\DC - Thunderstruck %28Official Video%29.wav" />
     <None Remove="Assets\DeadBody.png" />
     <None Remove="Assets\DeadHead.png" />
     <None Remove="Assets\DroidSansMono.ttf" />
@@ -17,6 +18,12 @@
     <None Remove="Assets\Food.png" />
     <None Remove="Assets\Head.png" />
     <None Remove="Assets\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\DC - Thunderstruck (Official Video).wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
